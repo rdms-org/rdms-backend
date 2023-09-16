@@ -48,7 +48,7 @@ CREATE TABLE rdms_audit_logs (
 `text` BLOB,
 `data` BLOB,
 PRIMARY KEY (id),
-FOREIGN KEY (account_id) REFERENCES rdms_accounts(id),
+FOREIGN KEY (account_id) REFERENCES rdms_accounts(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 CREATE TABLE rdms_device_logs (
@@ -60,7 +60,7 @@ CREATE TABLE rdms_device_logs (
 `text` BLOB,
 `data` BLOB,
 PRIMARY KEY (id),
-FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid),
+FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 CREATE TABLE rdms_notification_pool (
@@ -70,5 +70,5 @@ CREATE TABLE rdms_notification_pool (
 `contents` BLOB NOT NULL,
 `is_pushed` BOOLEAN NOT NULL DEFAULT FALSE,
 PRIMARY KEY (id),
-FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid),
+FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid)
 )ENGINE=InnoDB CHARSET=utf8mb4;
