@@ -22,7 +22,7 @@ docker ps -a
 docker stop {ContainerName}
 ```
 
-### Remove Docker Image
+### Remove Docker Container
 ```
 docker rm {ImageName}
 ```
