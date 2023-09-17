@@ -1,7 +1,9 @@
 FROM python:3.11
 
-RUN pip install flask flask-cors flask-mysql
+COPY . /usr/src/app
+
+RUN pip3 install flask
 
 WORKDIR /usr/src/app
 
-CMD {"python3", "server.py"}
+CMD ["python", "./app.py"]
