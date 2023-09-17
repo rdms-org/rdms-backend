@@ -1,4 +1,8 @@
 # rdms-backend
+## Project Setup (require Docker)
+```
+docker-compose up
+```
 
 ## Command For Docker
 ### Build Docker Image 
