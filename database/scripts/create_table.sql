@@ -20,7 +20,7 @@ PRIMARY KEY (id)
 CREATE TABLE rdms_devices (
 `uuid` VARCHAR(36) NOT NULL,
 `name` VARCHAR(64) NOT NULL,
-`creation_time` DATETIME NOT NULL,
+`creation_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `expiration_time` DATETIME,
 `is_expired` BOOLEAN,
 PRIMARY KEY (uuid)
@@ -30,7 +30,7 @@ CREATE TABLE rdms_rentals (
 `id` INT NOT NULL AUTO_INCREMENT,
 `device_uuid` VARCHAR(36) NOT NULL,
 `user_id` INT NOT NULL,
-`start_time` DATETIME NOT NULL,
+`start_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `end_time` DATETIME,
 `is_overdue` BOOLEAN,
 `is_returned` BOOLEAN,
@@ -66,9 +66,12 @@ FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid)
 CREATE TABLE rdms_notification_pool (
 `id` INT NOT NULL AUTO_INCREMENT,
 `device_uuid` VARCHAR(36) NOT NULL,
+`account_id` INT NOT NULL,
+`timestamp` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `title` BLOB NOT NULL,
 `contents` BLOB NOT NULL,
 `is_pushed` BOOLEAN NOT NULL DEFAULT FALSE,
 PRIMARY KEY (id),
-FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid)
+FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid),
+FOREIGN KEY (account_id) REFERENCES rdms_accounts(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
