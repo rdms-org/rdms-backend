@@ -2,7 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 host_addr = "0.0.0.0"
-host_port = 8080
+host_port = 5000
 
 @app.route('/')
 def hello():
