@@ -4,6 +4,7 @@ COPY . /usr/src/app
 
 RUN pip install flask
 RUN pip install Flask-Cors
+RUN pip install python-dotenv
 RUN pip install pymysql
 
 WORKDIR /usr/src/app
