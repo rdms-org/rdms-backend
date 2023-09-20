@@ -18,7 +18,7 @@ print("test")
 
 #로그인시 id와 pw로 존재여부 검사
 def loginAuth(id,pw):
-    sql = f"SELECT id FROM rdms_accounts WHERE identity='{id}' AND password='{pw}'"
-    cursor.execute(sql)
+    sql = f"SELECT id FROM rdms_accounts WHERE identity=%s AND password=%s"
+    cursor.execute(sql,(id,pw))
     result = cursor.fetchall()
     return len(result)==1
