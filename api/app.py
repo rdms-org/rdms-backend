@@ -1,14 +1,13 @@
 from flask import Flask, request, abort, session, redirect
 from flask_cors import CORS
 import DB
-from dotenv import load_dotenv
 import os
-#환경변수 로드
-load_dotenv()
 
 #Flask 앱 생성 및 설정
 app = Flask(__name__)
-app.secret_key = os.environ.get('SESSION_SECRET_KEY')
+app.secret_key = os.urandom(24)
+
+#개발환경에서만 사용
 CORS(app, resources={r'*': {'origins': '*'}})
 
 #배포 주소 및 포트
@@ -30,19 +29,21 @@ def login():
 
         if DB.loginAuth(username, password):
             session["username"] = username
-            return response_format("success")
+            print(session["username"])
+            return response_format("Success")
         else:
-            abort(401)
+            print("fail")
+            return response_format("Fail")
     else:
-        abort(400)
+        abort(400)  
 
 #세션 검사 기능
 @app.route("/api/auth/valid",methods=['GET'])
 def valid(): 
     if "username" in session: 
-        return response_format("success")
+        return response_format("Success")
     else:
-        return abort(401)
+        return response_format("Fail")
 
 
         
