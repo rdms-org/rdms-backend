@@ -23,6 +23,7 @@ def loginAuth(id,pw):
     cursor.execute(sql,(id,))
     result = cursor.fetchall()
     if len(result)==1:
+        #비밀번호 비교
         if checkpw(pw.encode('utf-8'),result[0][0].encode('utf-8')):
             return True
         else:
