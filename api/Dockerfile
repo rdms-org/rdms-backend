@@ -6,6 +6,7 @@ RUN pip install flask
 RUN pip install Flask-Cors
 RUN pip install python-dotenv
 RUN pip install pymysql
+RUN pip install bcrypt
 
 WORKDIR /usr/src/app
 

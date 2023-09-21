@@ -1,6 +1,7 @@
 import pymysql
 from dotenv import load_dotenv
 import os
+from bcrypt import checkpw
 
 load_dotenv()
 
@@ -16,9 +17,15 @@ db = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db=DB_NAM
 cursor = db.cursor()
 print("test")
 
-#로그인시 id와 pw로 존재여부 검사
+#로그인시 id와 pw 검사
 def loginAuth(id,pw):
-    sql = f"SELECT id FROM rdms_accounts WHERE identity=%s AND password=%s"
-    cursor.execute(sql,(id,pw))
+    sql = f"SELECT password FROM rdms_accounts WHERE identity=%s"
+    cursor.execute(sql,(id,))
     result = cursor.fetchall()
-    return len(result)==1
+    if len(result)==1:
+        if checkpw(pw.encode('utf-8'),result[0][0].encode('utf-8')):
+            return True
+        else:
+            return False
+    else:
+        return False
