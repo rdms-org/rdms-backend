@@ -42,7 +42,7 @@ def valid():
     if "username" in session: 
         return response_format("success")
     else:
-        return redirect('/')
+        return abort(401)
 
 
         
