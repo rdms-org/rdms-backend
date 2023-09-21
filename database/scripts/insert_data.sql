@@ -1,1 +1,1 @@
-INSERT INTO rdms_accounts (name,identity,password) VALUES ('rootUser','root','$2a$12$Pzck2SUWG.WcYYmSno9gkeUEvOEPoNJTw9t5NHMIJT0046hK4YSDa')
+INSERT INTO rdms_accounts (name,identity,password) VALUES ('rootUser','root','$2a$12$MutckHXfPmFsschLAGdJLOhDPZfWd1izmugBzFIgBHTlfhpWvuaTq')
