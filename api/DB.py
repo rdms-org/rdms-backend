@@ -19,7 +19,7 @@ print("test")
 
 #로그인시 id와 pw 검사
 def loginAuth(id,pw):
-    sql = f"SELECT password FROM rdms_accounts WHERE identity=%s"
+    sql = f"SELECT password FROM rdms_accounts WHERE username=%s"
     cursor.execute(sql,(id,))
     result = cursor.fetchall()
     if len(result)==1:
