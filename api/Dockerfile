@@ -2,6 +2,8 @@ FROM python:3.11
 
 COPY . /usr/src/app
 
+ENV DB_HOST db
+
 RUN pip install flask
 RUN pip install Flask-Cors
 RUN pip install python-dotenv
