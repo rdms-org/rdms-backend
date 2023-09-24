@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, session, redirect
+from flask import Flask, request, abort, session
 from flask_cors import CORS
 import DB
 import os
@@ -29,10 +29,8 @@ def login():
 
         if DB.loginAuth(username, password):
             session["username"] = username
-            print(session["username"])
             return response_format("Success")
         else:
-            print("fail")
             return response_format("Fail")
     else:
         abort(400)  
