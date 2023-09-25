@@ -19,6 +19,14 @@ def response_format(msg,data={}):
         return {"message":msg,"data":data}
 
 
+#세션 검사 기능
+@app.route("/api/auth/valid",methods=['GET'])
+def valid(): 
+    if "username" in session: 
+        return response_format("Success")
+    else:
+        return response_format("Fail")
+
 #로그인 기능
 @app.route("/api/auth/login",methods=['POST'])
 def login():
@@ -33,15 +41,7 @@ def login():
         else:
             return response_format("Fail")
     else:
-        abort(400)  
-
-#세션 검사 기능
-@app.route("/api/auth/valid",methods=['GET'])
-def valid(): 
-    if "username" in session: 
-        return response_format("Success")
-    else:
-        return response_format("Fail")
+        abort(400)
 
 #로그아웃 기능
 @app.route("/api/auth/logout",methods=['GET'])
@@ -52,9 +52,6 @@ def logout():
     else:
         return abort(401)
 
-
-        
-    
 
 if __name__ == "__main__":
     app.run(debug=True,
