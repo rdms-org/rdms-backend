@@ -43,6 +43,15 @@ def valid():
     else:
         return response_format("Fail")
 
+#로그아웃 기능
+@app.route("/api/auth/logout",methods=['GET'])
+def logout(): 
+    if "username" in session: 
+        session.clear()
+        return response_format("Success")
+    else:
+        return abort(401)
+
 
         
     
