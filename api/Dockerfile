@@ -9,7 +9,7 @@ ENV DB_NAME rdms
 ENV DB_USER root
 ENV DB_PASSWORD mysql_root_password
 
-RUN pip install flask
+RUN pip install flask[async]
 RUN pip install Flask-Cors
 RUN pip install python-dotenv
 RUN pip install pymysql

@@ -30,3 +30,7 @@ def loginAuth(id,pw):
             return False
     else:
         return False
+    
+#기기추가
+def addDevice(data):
+    return "Message"

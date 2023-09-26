@@ -2,8 +2,7 @@ from flask import Flask, request, abort, session
 from flask_cors import CORS
 import DB
 import os
-import random
-import time
+import OTP
 
 #Flask 앱 생성 및 설정
 app = Flask(__name__)
@@ -16,12 +15,10 @@ CORS(app, resources={r'*': {'origins': '*'}})
 host_addr = "0.0.0.0"
 host_port = 5000
 
-#otp 작업 저장해둘 딕셔너리, key = otp, value = info
-otp_list = {}
-
 #응답 형식 반환
 def response_format(msg,data={}):
-        return {"message":msg,"data":data}
+        resp = {"message":msg,"data":data}
+        return resp
 
 
 #세션 검사 기능
@@ -49,7 +46,7 @@ def login():
         abort(400)
 
 #로그아웃 기능
-@app.route("/api/auth/logout",methods=['POST'])
+@app.route("/api/auth/logout",methods=['GET'])
 def logout(): 
     if "username" in session: 
         session.clear()
@@ -57,20 +54,66 @@ def logout():
     else:
         return abort(401)
 
-@app.route("/api/auth/otp/gen",methods=['GET'])
-def get_otp(): 
+#OTP 생성
+@app.route("/api/auth/otp/gen",methods=['POST'])
+def gen_otp(): 
     if "username" in session: 
         body = request.get_json()
         if "type" in body and "data" in body:
             type = body["type"]
             data = body["data"]
-            while True:
-                otp = random.randint(0,9999)
-                if otp not in otp_list:
-                    break
-            otp_info = {"expires":time.time()+180,"type":type,"data":data}
-            otp_list[otp] = otp_info
-            return response_format("Success",{"otp":otp})
+            otp = OTP.generate(type, data)
+            return response_format("Success", {"otp":otp})
+        else:
+            return abort(400)
+    else:
+        return abort(401)
+
+
+
+#otp 인증
+@app.route("/api/auth/otp/valid",methods=['POST'])
+def valid_otp():
+    body = request.get_json()
+    if "otp" in body:
+        otp = body["otp"]
+        result = OTP.valid(otp)
+        if result:
+            return response_format("Success",result)
+        else:
+            return response_format("Fail")
+    else:
+        return abort(400)
+
+#otp 작업 실행
+@app.route("/api/auth/otp/execute",methods=['POST'])
+async def execute_otp():
+    if "username" in session: 
+        body = request.get_json()
+        if "otp" in body:
+            otp = body["otp"]
+            result = await OTP.execute(otp)
+            if result:
+                return response_format("Success")
+            else:
+                return response_format("Fail")
+        else:
+            return abort(400)
+    else:
+        return abort(401)
+
+#otp 만료
+@app.route("/api/auth/otp/expire",methods=['POST'])
+def expire_otp():
+    if "username" in session: 
+        body = request.get_json()
+        if "otp" in body:
+            otp = body["otp"]
+            result = OTP.expire(otp)
+            if result:
+                return response_format("Success")
+            else:
+                return response_format("Fail")
         else:
             return abort(400)
     else:
