@@ -4,7 +4,7 @@ CREATE TABLE rdms_accounts (
 `username` VARCHAR(256) NOT NULL,
 `password` VARCHAR(256) NOT NULL,
 `root_permission` BOOLEAN NOT NULL DEFAULT FALSE,
-`perference` BLOB,
+`preference` BLOB,
 PRIMARY KEY (id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
