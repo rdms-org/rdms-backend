@@ -1,1 +1,2 @@
-INSERT INTO rdms_accounts (name,username,password) VALUES ('rootUser','root','$2a$12$MutckHXfPmFsschLAGdJLOhDPZfWd1izmugBzFIgBHTlfhpWvuaTq')
+INSERT INTO rdms_accounts (name,username,password,root_permission) VALUES ('rootUser','root','$2a$12$MutckHXfPmFsschLAGdJLOhDPZfWd1izmugBzFIgBHTlfhpWvuaTq',TRUE);
+INSERT INTO rdms_accounts (name,username,password) VALUES ('testadmin','admin','$2a$12$MutckHXfPmFsschLAGdJLOhDPZfWd1izmugBzFIgBHTlfhpWvuaTq');
