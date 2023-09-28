@@ -1,6 +1,10 @@
 from random import randint
+import DB
 import asyncio
 import time
+
+#OTP 작업 종류
+work_list = {"add": DB.addDevice}
 
 #otp 작업 저장해둘 딕셔너리, key = otp, value = info
 otp_list = {}
@@ -54,8 +58,9 @@ def valid(otp):
         otp_info = otp_list[otp]
         if otp_info["expires"] >= time.time():
             if otp_info["execute"]:
-                #작업수행
-                res = "작업결과"
+                data = otp_info["data"]
+                work = work_list[otp_info["type"]] 
+                res = work(data)
                 otp_info["valid"]=True
                 return res
             else:
