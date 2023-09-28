@@ -18,18 +18,37 @@ cursor = db.cursor()
 print("test")
 
 #로그인시 id와 pw 검사
-def loginAuth(id,pw):
+def loginAuth(username, password):
     sql = f"SELECT password FROM rdms_accounts WHERE username=%s"
-    cursor.execute(sql,(id,))
+    cursor.execute(sql,(username,))
     result = cursor.fetchall()
     if len(result)==1:
         #비밀번호 비교
-        if checkpw(pw.encode('utf-8'),result[0][0].encode('utf-8')):
+        if checkpw(password.encode('utf-8'),result[0][0].encode('utf-8')):
             return True
         else:
             return False
     else:
         return False
+    
+def getUser(username):
+    sql = f"SELECT id,name,username,root_permission,preference FROM rdms_accounts WHERE username=%s"
+    cursor.execute(sql,(username,))
+    result = cursor.fetchall()
+    if len(result)==1:
+        result = result[0]
+        data = {
+            "id":result[0],
+            "name":result[1],
+            "username":result[2],
+            "root_permission":result[3],
+            "perference":result[4]
+            }
+        return data
+    else:
+        return None
+
+    
     
 #기기추가
 def addDevice(data):
