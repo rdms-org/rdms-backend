@@ -25,7 +25,8 @@ def response_format(msg,data={}):
 @app.route("/api/auth/valid",methods=['GET'])
 def valid(): 
     if "username" in session: 
-        return response_format("Success")
+        data = DB.getUser(session["username"])
+        return response_format("Success",data)
     else:
         return response_format("Fail")
 
