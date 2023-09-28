@@ -39,7 +39,8 @@ def login():
 
         if DB.loginAuth(username, password):
             session["username"] = username
-            return response_format("Success")
+            data = DB.getUser(username)
+            return response_format("Success",data)
         else:
             return response_format("Fail")
     else:
