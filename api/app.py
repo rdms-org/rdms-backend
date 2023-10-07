@@ -96,7 +96,7 @@ async def execute_otp():
             otp = body["otp"]
             result = await OTP.execute(otp)
             if result:
-                return response_format("Success")
+                return response_format("Success",result)
             else:
                 return response_format("Fail")
         else:
@@ -120,7 +120,6 @@ def expire_otp():
             return abort(400)
     else:
         return abort(401)
-
 
 if __name__ == "__main__":
     app.run(debug=True,
