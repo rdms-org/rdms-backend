@@ -4,7 +4,7 @@ import time
 import DB
 
 #otp 작업 종류별 함수
-otp_function = {'add':DB.addDevice}
+otp_function = {'add':DB.addDevice, 'delete':DB.deleteDevice}
 
 #otp 작업 저장해둘 딕셔너리, key = otp, value = info
 otp_list = {}
@@ -53,18 +53,22 @@ async def execute(otp):
         return False
 
 #OTP 인증
-def valid(otp):
+def valid(otp, uuid="*"):
     if otp in otp_list:
         otp_info = otp_list[otp]
-        if otp_info["expires"] >= time.time():
-            if otp_info["execute"]:
-                otp_info["result"] = otp_function[otp_info["type"]](otp_info["data"])
-                otp_info["valid"]=True
-                return otp_info["result"]
+        if "uuid" not in otp_info["data"] or otp_info["data"]["uuid"] == uuid:
+            if otp_info["expires"] >= time.time():
+                if otp_info["execute"]:
+                    otp_info["result"] = otp_function[otp_info["type"]](otp_info["data"])
+                    otp_info["valid"]=True
+                    return otp_info["result"]
+                else:
+                    return False
             else:
+                del(otp_list[otp])
                 return False
         else:
-            del(otp_list[otp])
+            print("dd")
             return False
     else:
         return False

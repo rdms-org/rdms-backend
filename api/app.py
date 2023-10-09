@@ -71,15 +71,17 @@ def gen_otp():
     else:
         return abort(401)
 
-
-
 #otp 인증
 @app.route("/api/auth/otp/valid",methods=['POST'])
 def valid_otp():
     body = request.get_json()
     if "otp" in body:
         otp = body["otp"]
-        result = OTP.valid(otp)
+        if "uuid" in body:
+            uuid = body["uuid"]
+            result = OTP.valid(otp,uuid)
+        else:
+            result = OTP.valid(otp)
         if result:
             return response_format("Success",result)
         else:
@@ -138,8 +140,6 @@ def get_device():
         #todo
     else:
         return abort(401)
-
-
 
 if __name__ == "__main__":
     app.run(debug=True,

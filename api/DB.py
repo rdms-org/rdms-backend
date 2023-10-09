@@ -102,3 +102,15 @@ def addDevice(otpData):
     cursor.execute(sql,(uuid,otpData["name"]))
     db.commit()
     return getDevice(uuid)
+
+#기기삭제
+def deleteDevice(otpData):
+    uuid = otpData["uuid"]
+    if len(getDevice(uuid))==0:
+        return False
+    else:
+        sql = f"DELETE FROM rdms_devices WHERE uuid=%s;"
+        cursor.execute(sql,(uuid,))
+        db.commit()
+        return True
+        
