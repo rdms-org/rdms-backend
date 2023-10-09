@@ -7,9 +7,6 @@ import DB
 #otp 작업 종류별 함수
 otp_function = {'add':DB.addDevice, 'delete':DB.deleteDevice}
 
-#OTP 작업 종류
-work_list = {"add": DB.addDevice}
-
 #otp 작업 저장해둘 딕셔너리, key = otp, value = info
 otp_list = {}
 
@@ -72,7 +69,6 @@ def valid(otp, uuid="*"):
                 del(otp_list[otp])
                 return False
         else:
-            print("dd")
             return False
     else:
         return False
