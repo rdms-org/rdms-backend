@@ -22,7 +22,7 @@ CREATE TABLE rdms_devices (
 `name` VARCHAR(64) NOT NULL,
 `creation_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `expiration_time` DATETIME,
-`is_expired` BOOLEAN,
+`is_expired` BOOLEAN DEFAULT FALSE,
 PRIMARY KEY (uuid)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
@@ -32,8 +32,8 @@ CREATE TABLE rdms_rentals (
 `user_id` INT NOT NULL,
 `start_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `end_time` DATETIME,
-`is_overdue` BOOLEAN,
-`is_returned` BOOLEAN,
+`is_overdue` BOOLEAN DEFAULT FALSE,
+`is_returned` BOOLEAN DEFAULT FALSE,
 PRIMARY KEY (id),
 FOREIGN KEY (device_uuid) REFERENCES rdms_devices(uuid),
 FOREIGN KEY (user_id) REFERENCES rdms_users(id)

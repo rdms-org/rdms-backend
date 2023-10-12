@@ -1,6 +1,11 @@
 from random import randint
+import DB
 import asyncio
 import time
+import DB
+
+#otp 작업 종류별 함수
+otp_function = {'add':DB.addDevice, 'delete':DB.deleteDevice}
 
 #otp 작업 저장해둘 딕셔너리, key = otp, value = info
 otp_list = {}
@@ -11,7 +16,7 @@ def generate(type, data):
         otp = str(randint(0,9999)).zfill(4)
         if otp not in otp_list:
             break
-    otp_info = {"expires":time.time()+180,"type":type,"data":data,"execute":False, "valid":False}
+    otp_info = {"expires":time.time()+180,"type":type,"data":data,"execute":False, "valid":False,"result":{}}
     otp_list[otp] = otp_info
     return otp
 
@@ -35,7 +40,7 @@ async def execute(otp):
                 otp_info["execute"] = True
                 if await valid_wait(otp):
                     del(otp_list[otp])
-                    return True
+                    return otp_info["result"]
                 else:
                     del(otp_list[otp])
                     return False
@@ -49,19 +54,21 @@ async def execute(otp):
         return False
 
 #OTP 인증
-def valid(otp):
+def valid(otp, uuid="*"):
     if otp in otp_list:
         otp_info = otp_list[otp]
-        if otp_info["expires"] >= time.time():
-            if otp_info["execute"]:
-                #작업수행
-                res = "작업결과"
-                otp_info["valid"]=True
-                return res
+        if "uuid" not in otp_info["data"] or otp_info["data"]["uuid"] == uuid:
+            if otp_info["expires"] >= time.time():
+                if otp_info["execute"]:
+                    otp_info["result"] = otp_function[otp_info["type"]](otp_info["data"])
+                    otp_info["valid"]=True
+                    return otp_info["result"]
+                else:
+                    return False
             else:
+                del(otp_list[otp])
                 return False
         else:
-            del(otp_list[otp])
             return False
     else:
         return False

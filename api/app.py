@@ -71,15 +71,17 @@ def gen_otp():
     else:
         return abort(401)
 
-
-
 #otp 인증
 @app.route("/api/auth/otp/valid",methods=['POST'])
 def valid_otp():
     body = request.get_json()
     if "otp" in body:
         otp = body["otp"]
-        result = OTP.valid(otp)
+        if "uuid" in body:
+            uuid = body["uuid"]
+            result = OTP.valid(otp,uuid)
+        else:
+            result = OTP.valid(otp)
         if result:
             return response_format("Success",result)
         else:
@@ -96,7 +98,7 @@ async def execute_otp():
             otp = body["otp"]
             result = await OTP.execute(otp)
             if result:
-                return response_format("Success")
+                return response_format("Success",result)
             else:
                 return response_format("Fail")
         else:
@@ -121,6 +123,23 @@ def expire_otp():
     else:
         return abort(401)
 
+#모든 디바이스 정보 가져오기
+@app.route("/api/devices",methods=['GET'])
+def get_all_devices():
+    if "username" in session: 
+        res = DB.getAllDevices()
+        return response_format("Success",res)
+    else:
+        return abort(401)
+
+#특정 디바이스 정보 가져오기
+@app.route("/api/device",methods=['GET'])
+def get_device():
+    if "username" in session: 
+        args = request.args.to_dict()
+        #todo
+    else:
+        return abort(401)
 
 if __name__ == "__main__":
     app.run(debug=True,
