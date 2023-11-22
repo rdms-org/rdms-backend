@@ -31,7 +31,18 @@ def loginAuth(username, password):
             return False
     else:
         return False
-    
+
+#루트어드민 여부 확인
+def isRoot(username):
+    sql = f"SELECT id FROM rdms_accounts WHERE username=%s AND root_permission=TRUE"
+    cursor.execute(sql,(username,))
+    result = cursor.fetchall()
+    if len(result)==1:
+        return True
+    else:
+        return False
+
+
 #username으로 유저 정보 가져오기
 def getUser(username):
     sql = f"SELECT id,name,username,root_permission,preference FROM rdms_accounts WHERE username=%s"
@@ -105,12 +116,16 @@ def addDevice(otpData):
 
 #기기삭제
 def deleteDevice(otpData):
-    uuid = otpData["uuid"]
-    if len(getDevice(uuid))==0:
-        return False
+    admin = otpData["admin"]
+    if isRoot(admin):
+        uuid = otpData["uuid"]
+        if len(getDevice(uuid))==0:
+            return False
+        else:
+            sql = f"DELETE FROM rdms_devices WHERE uuid=%s;"
+            cursor.execute(sql,(uuid,))
+            db.commit()
+            return True
     else:
-        sql = f"DELETE FROM rdms_devices WHERE uuid=%s;"
-        cursor.execute(sql,(uuid,))
-        db.commit()
-        return True
+        return False
         
