@@ -65,7 +65,7 @@ def gen_otp():
             type = body["type"]
             data = body["data"]
             otp = OTP.generate(type, data)
-            return response_format("Success", {"otp":otp})
+            return response_format("Success", otp)
         else:
             return abort(400)
     else:

@@ -18,7 +18,7 @@ def generate(type, data):
             break
     otp_info = {"expires":time.time()+180,"type":type,"data":data,"execute":False, "valid":False,"result":{}}
     otp_list[otp] = otp_info
-    return otp
+    return {"otp":otp,"type":otp_info["type"],"expires":otp_info["expires"]}
 
 #OTP 인증여부 확인
 async def valid_wait(otp):
