@@ -140,6 +140,36 @@ def get_device():
         #todo
     else:
         return abort(401)
+    
+#유저 추가
+@app.route("/api/users",methods=['POST'])
+def add_user(): 
+    if "username" in session: 
+        body = request.get_json()
+        if "name" in body and "student_number" in body and "contacts" in body:
+            name = body["name"]
+            student_number = body["student_number"]
+            contacts = body["contacts"]
+            if "note" in body:
+                note = body["note"]
+            else:
+                note = ""
+            result = DB.addUser({"name":name,"student_number":student_number, "contacts":contacts, "note":note})
+            #유저 추가
+            return response_format("Success", result)
+        else:
+            return abort(400)
+    else:
+        return abort(401)
+
+#모든 유저 정보 가져오기
+@app.route("/api/users",methods=['GET'])
+def get_all_users():
+    if "username" in session: 
+        res = DB.getAllUsers()
+        return response_format("Success",res)
+    else:
+        return abort(401)
 
 if __name__ == "__main__":
     app.run(debug=True,

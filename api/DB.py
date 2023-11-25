@@ -128,4 +128,47 @@ def deleteDevice(otpData):
             return True
     else:
         return False
+
+#유저추가
+def addUser(userData):
+    sql = f"INSERT INTO rdms_users (name,student_number,contacts,note) VALUES (%s,%s,%s,%s);"
+    cursor.execute(sql,(userData["name"],userData["student_number"],userData["contacts"],userData["note"]))
+    db.commit()
+    return getUser(id)
         
+#유저조회
+def getUser(id):
+    sql = f"SELECT id, name, student_number, contacts, note FROM rdms_users WHERE id=%s;"
+    cursor.execute(sql,(id,))
+    result = cursor.fetchall()
+    if(len(result)==0):
+        return {}
+    else:
+        result = result[0]
+        userData = {
+            "id":result[0],
+            "name":result[1],
+            "student_number":result[2],
+            "contacts":result[3],
+            "note":result[4],
+            }
+        return userData
+    
+
+#모든 유저 정보 가져오기
+def getAllUsers():
+    sql = f"SELECT id, name,student_number, contacts, note FROM rdms_users"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    if(len(results)==0):
+        return []
+    else:
+        print(results)
+        data = [{
+            "id":result[0],
+            "name":result[1],
+            "student_number":result[2],
+            "contacts":result[3],
+            "note":result[4].decode("utf-8")
+            } for result in results]
+        return data
