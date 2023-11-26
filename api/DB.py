@@ -134,6 +134,9 @@ def addUser(userData):
     sql = f"INSERT INTO rdms_users (name,student_number,contacts,note) VALUES (%s,%s,%s,%s);"
     cursor.execute(sql,(userData["name"],userData["student_number"],userData["contacts"],userData["note"]))
     db.commit()
+    sql = f"SELECT id FROM rdms_users ORDER BY id DESC LIMIT 1;"
+    cursor.execute(sql)
+    id = cursor.fetchall()[0][0]
     return getUser(id)
         
 #유저조회
@@ -150,7 +153,7 @@ def getUser(id):
             "name":result[1],
             "student_number":result[2],
             "contacts":result[3],
-            "note":result[4],
+            "note":result[4].decode("utf-8"),
             }
         return userData
     
@@ -163,7 +166,6 @@ def getAllUsers():
     if(len(results)==0):
         return []
     else:
-        print(results)
         data = [{
             "id":result[0],
             "name":result[1],
